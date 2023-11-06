@@ -2,8 +2,8 @@ package com.gdsc_teamb.servertoyproject.domain.post.domain;
 
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class PostEntity {
     @NotNull
     private UserEntity user;
 
-    @Max(50)
+    @Size(max = 50)
     @NotNull
     private String title;
 

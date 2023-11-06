@@ -1,9 +1,8 @@
 package com.gdsc_teamb.servertoyproject.domain.user.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +26,11 @@ public class UserEntity {
     @NotNull
     private String password;
 
-    @Min(2)
-    @Max(8)
+    @Size(min = 2, max = 8)
     @NotNull
     private String nickname;
 
-    @Max(11)
+    @Size(max = 11)
     @NotNull
     private String phone;
 
