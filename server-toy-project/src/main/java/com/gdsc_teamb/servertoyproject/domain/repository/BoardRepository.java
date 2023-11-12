@@ -7,8 +7,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+// PostEntity 관리하는 JPA 레포
+// PostEntity에 대한 CRUD 작업 제공
 @Repository
 public interface BoardRepository extends JpaRepository<PostEntity, Long> {
+    //ID 기준으로 내림차순되게 쿼리 정의함
     @Query("SELECT p FROM PostEntity p ORDER BY p.id DESC")
     List<PostEntity> findAllDesc();
 }

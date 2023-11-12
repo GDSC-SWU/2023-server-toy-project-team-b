@@ -27,9 +27,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BoardControllerTest {
 
+    // 테스트에 사용할 서버의 랜덤 포트 번호를 할당
     @LocalServerPort
     private int port;
 
+    // TestRestTemplate : 테스트용 RestTemplate
+    // HTTP 요청을 수행하는 데 사용
+    // 테스트 코드에서 HTTP 요청을 보내고 응답을 확인하는 등의 작업을 간편하게 수행할 수 있음
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -38,6 +42,7 @@ class BoardControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    // 테스트 실행 후에 수행될 데이터 정리 메서드
     @AfterEach
     public void tearDown() throws Exception {
         boardRepository.deleteAll();
@@ -49,8 +54,7 @@ class BoardControllerTest {
 
     @Test
     public void Posts_등록() throws Exception{
-        //given_등록할_게시글
-
+        //Given 등록할 게시글 생성
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
                 .password("password1234")
@@ -66,13 +70,20 @@ class BoardControllerTest {
 
         String url="http://localhost:" + port + "/api/boards";
 
-        //when_게시글_등록요청
+        // When 게시글 등록 요청
+        // 실제로 게시글을 등록하는 HTTP POST 요청을 보냄
+        // TestRestTemplate 을 사용하여 지정된 URL에 boardDto를 POST 방식으로 전송
+        // ResponseEntity<Long> 은 HTTP 응답을 나타내는 객체
+        // 이 ResponseEntity 는 HTTP 응답 상태 코드와 함께 생성된 게시글의 ID를 포함 (responseEntity.getBody()를 통해 반환 가능)
         ResponseEntity<Long> responseEntity=restTemplate.postForEntity(url, boardDto, Long.class);
 
-        //then_게시글이_등록된다
+        // Then 게시글 등록
+        // 응답 상태 코드가 HttpStatus.OK인지 확인
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // 반환된 게시글의 ID가 0보다 큰지 확인
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
+        // 데이터베이스에 저장된 모든 게시글을 조회하고, 첫 번째 게시글이 기대한 대로 생성되었는지 검증
         List<PostEntity> all = boardRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(TITLE);
         assertThat(all.get(0).getContent()).isEqualTo(CONTENT);
@@ -82,7 +93,7 @@ class BoardControllerTest {
 
     @Test
     public void Posts_수정() throws Exception {
-        //given 등록된 게시물과 수정할 게시물
+        // Given 등록된 게시물과 수정할 게시물
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
                 .password("password1234")
@@ -109,14 +120,29 @@ class BoardControllerTest {
 
         HttpEntity<BoardUpdateDto> requestEntity=new HttpEntity<>(boardUpdateDto);
 
-        // when 게시글 수정 요청
+        // When 게시글 수정 요청
         ResponseEntity<Long> responseEntity = restTemplate.
                 exchange(url, HttpMethod.PUT,
                         requestEntity, Long.class);
 
-        // then 게시글 수정된다
+        // Then 게시글 수정된다
         List<PostEntity> all = boardRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
+
+    @Test
+    public void Posts_조회() throws Exception{
+
+    }
+
+    @Test
+    public void Posts_목록조회() throws Exception{
+
+    }
+
+    @Test
+    public void Posts_삭제() throws Exception{
+
     }
 }

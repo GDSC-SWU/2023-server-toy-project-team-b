@@ -15,31 +15,49 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    //생성
+    // 게시글 생성
+    // HTTP POST 요청을 통해 새로운 게시글을 생성
+    // 매개변수: 새로운 게시글을 생성하기 위한 데이터를 담은 DTO
+    // @RequestBody 어노테이션은 JSON 데이터를 BoardDto 객체로 변환하여 save 메서드의 매개변수로 전달함
+    // 반환 값: 새로 생성된 게시글의 ID를 반환함
     @PostMapping("/api/boards")
     public Long save(@RequestBody BoardDto boardDto){
         return boardService.save(boardDto);
     }
 
-    //수정
+    // 게시글 수정
+    // HTTP PUT 요청을 통해 특정 ID의 게시글을 수정
+    // 매개변수: 수정할 게시글의 ID, 수정할 내용이 담긴 DTO
+    // @PathVariable을 통해 경로에서 추출된 게시글의 ID를 전달 받고, @RequestBody를 통해 클라이언트로부터 전달된 JSON 데이터를 변환하여 requestDto로 전달
+    // 반환 값: 수정이 완료된 게시글의 ID를 반환
     @PutMapping("/api/boards/{id}")
     public Long update(@PathVariable Long id, @RequestBody BoardUpdateDto requestDto){
         return boardService.update(id, requestDto);
     }
 
-    //읽기 (조회)
+    // 게시글 조회
+    // HTTP GET 요청을 통해 특정 ID의 게시글을 조회
+    // 매개변수: 조회할 게시글의 ID를 전달받음
+    // @PathVariable을 통해 경로에서 추출된 게시글의 ID를 전달 받습니다.
+    // 반환 값: 조회된 게시글의 세부 정보가 담긴 DTO를 반환
     @GetMapping("/api/boards/{id}")
     public BoardReadDto findById (@PathVariable Long id){
         return boardService.findById(id);
     }
 
-    // 목록읽기
+    // 게시글 목록 조회
+    // HTTP GET 요청을 통해 모든 게시글 목록을 조회
+    // 반환 값: 조회된 모든 게시글의 간략한 목록이 담긴 DTO들을 리스트로 반환
     @GetMapping("/api/boards")
     public List<BoardListDto> findAllDesc() {
         return boardService.findAllDesc();
     }
 
-    //삭제
+    // 게시글 삭제
+    // HTTP DELETE 요청을 통해 특정 ID의 게시글을 삭제
+    // 매개변수: 삭제할 게시글의 ID를 전달 받음
+    // @PathVariable 을 통해 경로에서 추출된 게시글의 ID를 전달 받습니다.
+    // 반환 값: 삭제가 완료된 게시글의 ID를 반환
     @DeleteMapping("/api/boards/{id}")
     public Long delete(@PathVariable Long id){
         boardService.delete(id);
