@@ -46,6 +46,11 @@ public class PostEntity {
         this.content = content;
     }
 
+    public void update(String title, String content){
+        this.title=title;
+        this.content=content;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
