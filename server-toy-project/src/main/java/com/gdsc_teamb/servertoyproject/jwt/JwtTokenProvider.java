@@ -30,7 +30,7 @@ public class JwtTokenProvider {
     }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 생성
-    public TokenInfo generateToken(Authentication authentication) {
+    public JwtToken generateToken(Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -54,7 +54,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return TokenInfo.builder()
+        return JwtToken.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -98,7 +98,6 @@ public class JwtTokenProvider {
                 log.info("JWT 토큰이 잘못되었습니다.", e);
             }
         }
-
         return false;
     }
 
@@ -109,5 +108,4 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
-
 }
