@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
                 .httpBasic(AbstractHttpConfigurer::disable) // rest api 이므로 basic auth 및 csrf 보안을 사용 X
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 X
+                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT 사용 -> 세션 사용 X
                 .authorizeRequests()
                 .requestMatchers(new AntPathRequestMatcher("/members/login")).permitAll()    // 모든 요청 허가
                 .requestMatchers(new AntPathRequestMatcher("/members/test")).hasRole("USER") // USER 권한 확인
@@ -36,6 +36,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // BCrypt Encoder 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
