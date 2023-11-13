@@ -13,6 +13,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+// DB 테이블과 매핑하기 위해서 사용되는 객체
+// 필요한 필드들이 선언되어 있음
 @Entity
 @Table(name = "Post")
 @NoArgsConstructor

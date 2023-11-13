@@ -45,10 +45,11 @@ public class BoardService {
     // 조회된 게시글의 세부 내용을 담은 BoardReadDto를 return
     @Transactional
     public BoardReadDto findById (Long id){
-        PostEntity entity=boardRepository.findById(id)
+        // boardRepository 에서 주어진 id에 해당하는 게시글을 데이터베이스에서 조회
+        PostEntity post=boardRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
 
-        return new BoardReadDto(entity);
+        return new BoardReadDto(post);
     }
 
     // 게시글 목록 조회
@@ -65,11 +66,13 @@ public class BoardService {
     // id는 삭제할 게시글의 ID
     @Transactional
     public void delete(Long id){
-        PostEntity posts=boardRepository.findById(id)
+        // boardRepository 에서 주어진 id에 해당하는 게시글을 데이터베이스에서 조회
+        PostEntity post=boardRepository.findById(id)
                 .orElseThrow(() -> new
                         IllegalArgumentException("해당 게시글이 없습니다. id="+id));
-
-        boardRepository.delete(posts);
+        // JpaRepository 에서 기본 제공되는 delete 메서드
+        // 주어진 post 엔티티를 데이터베이스에서 삭제하는 역할
+        boardRepository.delete(post);
     }
 
 
