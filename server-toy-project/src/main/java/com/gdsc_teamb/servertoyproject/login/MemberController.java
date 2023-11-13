@@ -1,6 +1,6 @@
 package com.gdsc_teamb.servertoyproject.login;
 
-import com.gdsc_teamb.servertoyproject.jwt.TokenInfo;
+import com.gdsc_teamb.servertoyproject.jwt.JwtToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +13,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public TokenInfo login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
-        String memberId = memberLoginRequestDto.getMemberId();
-        String password = memberLoginRequestDto.getPassword();
-        TokenInfo tokenInfo = memberService.login(memberId, password);
-        return tokenInfo;
+    public JwtToken login(@RequestBody LoginDto loginDto) {
+        String memberId = loginDto.getMemberId();
+        String password = loginDto.getPassword();
+        JwtToken jwtToken = memberService.login(memberId, password);
+        return jwtToken;
     }
+
     @PostMapping("/test")
     public String test() {
         return "success";
