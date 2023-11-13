@@ -5,6 +5,7 @@ import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentRepository;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.UpdateCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
@@ -100,5 +101,31 @@ class CommentServiceTest {
         assertThat(resDto.getComments().size()).as("Comment 데이터 개수가 2건이 아님.").isEqualTo(2);
         assertThat(resDto.getComments().get(0).getContent()).as("content가 올바르지 않음.").isEqualTo(content1);
         assertThat(resDto.getComments().get(1).getContent()).as("content가 올바르지 않음.").isEqualTo(content2);
+    }
+
+    @Test
+    @DisplayName("updateComment() 테스트")
+    void updateComment() {
+        // given
+        String content1 = "comment1-test";
+        String content2 = "comment2-test";
+        CommentEntity comment = CommentEntity.builder()
+                .user(user)
+                .post(post)
+                .content(content1)
+                .build();
+        Long commentId = commentRepository.save(comment).getId();
+
+        // when
+        UpdateCommentResDto resDto = commentService.updateComment(user, commentId, new NewCommentReqDto(post.getId(), content2));
+
+        // then
+        CommentEntity commentData = commentRepository.findById(commentId).orElse(null);
+        assertThat(commentData).as("commentData가 null임.").isNotNull();
+        assertThat(commentData.getUpdated_at()).as("updatedAt이 null임.").isNotNull();
+        assertThat(commentData.getContent()).as("content가 수정되지 않음.").isEqualTo(content2);
+        assertThat(resDto.getWriterNickname()).as("응답 dto의 nickname이 올바르지 않음.").isEqualTo(user.getNickname());
+        assertThat(resDto.getCommentId()).as("응답 dto의 comment-id가 올바르지 않음.").isEqualTo(commentId);
+        assertThat(resDto.getContent()).as("응답 dto의 content가 올바르지 않음.").isEqualTo(content2);
     }
 }
