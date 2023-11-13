@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class NewCommentResDto {
     private String nickname;
-    private Boolean isWriter;
+    private Boolean isPostWriter;
     private Long postId;
     private Long commentId;
     private String content;

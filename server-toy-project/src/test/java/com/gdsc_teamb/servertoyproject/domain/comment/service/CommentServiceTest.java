@@ -68,7 +68,7 @@ class CommentServiceTest {
         assertThat(commentEntity).as("데이터베이스에 올바르게 저장되지 않음.").isNotNull();
         assertThat(commentEntity.getContent()).as("content가 데이터베이스에 올바르게 저장되지 않음.").isEqualTo(content);
         assertThat(resDto.getNickname()).as("nickname이 올바르지 않음.").isEqualTo(NICKNAME);
-        assertThat(resDto.getIsWriter()).as("Post 작성자와 동일 여부가 올바르지 않음.").isTrue();
+        assertThat(resDto.getIsPostWriter()).as("Post 작성자와 동일 여부가 올바르지 않음.").isTrue();
         assertThat(resDto.getPostId()).as("postId가 올바르지 않음.").isEqualTo(post.getId());
         assertThat(resDto.getContent()).as("content가 올바르지 않음.").isEqualTo(content);
     }

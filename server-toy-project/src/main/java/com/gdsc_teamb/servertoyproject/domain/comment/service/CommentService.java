@@ -51,7 +51,7 @@ public class CommentService {
         // 결과 반환
         return NewCommentResDto.builder()
                 .nickname(user.getNickname())
-                .isWriter(post.getUser().equals(user))
+                .isPostWriter(post.getUser().equals(user))
                 .postId(post.getId())
                 .commentId(commentId)
                 .content(comment.getContent())
@@ -70,4 +70,7 @@ public class CommentService {
         // 결과 반환
         return new ReadCommentResDto(postId, comments);
     }
+
+    // 댓글 수정
+
 }
