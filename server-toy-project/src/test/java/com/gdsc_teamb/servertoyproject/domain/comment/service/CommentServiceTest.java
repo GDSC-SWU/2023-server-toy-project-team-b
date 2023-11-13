@@ -2,6 +2,7 @@ package com.gdsc_teamb.servertoyproject.domain.comment.service;
 
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentEntity;
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentRepository;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.CommentItemDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -127,5 +130,33 @@ class CommentServiceTest {
         assertThat(resDto.getWriterNickname()).as("응답 dto의 nickname이 올바르지 않음.").isEqualTo(user.getNickname());
         assertThat(resDto.getCommentId()).as("응답 dto의 comment-id가 올바르지 않음.").isEqualTo(commentId);
         assertThat(resDto.getContent()).as("응답 dto의 content가 올바르지 않음.").isEqualTo(content2);
+    }
+
+    @Test
+    @DisplayName("deleteComment() 테스트")
+    void deleteComment() {
+        // given
+        String content1 = "comment1-test";
+        String content2 = "comment2-test";
+        CommentEntity comment1 = CommentEntity.builder()
+                .user(user)
+                .post(post)
+                .content(content1)
+                .build();
+        Long commentId = commentRepository.save(comment1).getId();
+        CommentEntity comment2 = CommentEntity.builder()
+                .user(user)
+                .post(post)
+                .content(content2)
+                .build();
+        commentRepository.save(comment2);
+
+        // when
+        commentService.deleteComment(user, commentId);
+
+        // then
+        ArrayList<CommentItemDto> comments = commentRepository.findAllByPost(post);
+        assertThat(comments.size()).as("데이터가 1건이 아님.").isEqualTo(1);
+        assertThat(comments.get(0).getContent()).as("content가 올바르지 않음.").isEqualTo(content2);
     }
 }
