@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CommentErrorCode implements ErrorCode {
-    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "Invalid Post Id.");
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "Invalid Post Id."),
+    COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "Invalid Comment Id."),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "Have no permission to update comment.");
 
     private final HttpStatus httpStatus;
     private final String message;

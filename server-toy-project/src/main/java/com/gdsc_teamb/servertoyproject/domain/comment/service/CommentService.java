@@ -6,6 +6,7 @@ import com.gdsc_teamb.servertoyproject.domain.comment.dto.CommentItemDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.UpdateCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.error.CommentErrorCode;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
@@ -72,5 +73,25 @@ public class CommentService {
     }
 
     // 댓글 수정
+    @Transactional
+    public UpdateCommentResDto updateComment(UserEntity user, Long commentId, NewCommentReqDto reqDto) {
+        // comment-id 유효성 검사
+        CommentEntity comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RestApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+
+        // 댓글 작성자와 요청 사용자 일치 여부 확인
+        if (!comment.getUser().equals(user))
+            throw new RestApiException(CommentErrorCode.ACCESS_DENIED);
+
+        // 데이터 수정
+        comment.update(reqDto.getContent());
+
+        // 결과 반환
+        return UpdateCommentResDto.builder()
+                .writerNickname(user.getNickname())
+                .commentId(commentId)
+                .content(comment.getContent())
+                .build();
+    }
 
 }
