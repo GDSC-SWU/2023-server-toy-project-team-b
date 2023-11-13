@@ -33,7 +33,8 @@ public class CommentService {
     @Transactional
     public CommentResDto addComment(UserEntity user, NewCommentReqDto newCommentReqDto) throws RestApiException {
         // temp
-        user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+        if (user == null)
+            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
 
         // post-id로 PostEntity 탐색
         PostEntity post = postRepository.findById(newCommentReqDto.getPost_id())
@@ -74,7 +75,11 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public UpdateCommentResDto updateComment(UserEntity user, Long commentId, NewCommentReqDto reqDto) {
+    public UpdateCommentResDto updateComment(UserEntity user, Long commentId, NewCommentReqDto reqDto) throws RestApiException {
+        // temp
+        if (user == null)
+            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+
         // comment-id 유효성 검사
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RestApiException(CommentErrorCode.COMMENT_NOT_FOUND));
@@ -93,5 +98,4 @@ public class CommentService {
                 .content(comment.getContent())
                 .build();
     }
-
 }
