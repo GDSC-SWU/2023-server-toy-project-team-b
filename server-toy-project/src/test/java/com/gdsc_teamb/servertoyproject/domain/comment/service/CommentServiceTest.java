@@ -120,7 +120,7 @@ class CommentServiceTest {
         Long commentId = commentRepository.save(comment).getId();
 
         // when
-        UpdateCommentResDto resDto = commentService.updateComment(user, commentId, new NewCommentReqDto(content2));
+        UpdateCommentResDto resDto = commentService.updateComment(user, user.getId(), commentId, new NewCommentReqDto(content2));
 
         // then
         CommentEntity commentData = commentRepository.findById(commentId).orElse(null);
@@ -152,7 +152,7 @@ class CommentServiceTest {
         commentRepository.save(comment2);
 
         // when
-        commentService.deleteComment(user, commentId);
+        commentService.deleteComment(user, user.getId(), commentId);
 
         // then
         ArrayList<CommentItemDto> comments = commentRepository.findAllByPost(post);

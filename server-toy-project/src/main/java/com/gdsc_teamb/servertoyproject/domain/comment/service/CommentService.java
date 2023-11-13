@@ -29,19 +29,12 @@ public class CommentService {
     // temp
     private final UserRepository userRepository;
 
-    // temp
-    public UserEntity getUser(UserEntity user) throws RestApiException {
-        if (user == null)
-            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
-
-        return user;
-    }
-
     // 댓글 작성
     @Transactional
     public CommentResDto addComment(UserEntity user, Long postId, NewCommentReqDto newCommentReqDto) throws RestApiException {
         // temp
-        user = getUser(user);
+        if (user == null)
+            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
 
         // post-id 유효성 검사
         PostEntity post = postRepository.findById(postId)
@@ -82,9 +75,9 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public UpdateCommentResDto updateComment(UserEntity user, Long commentId, NewCommentReqDto reqDto) throws RestApiException {
+    public UpdateCommentResDto updateComment(UserEntity user, Long userId, Long commentId, NewCommentReqDto reqDto) throws RestApiException {
         // temp
-        user = getUser(user);
+        user = userRepository.findById(userId).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
 
         // comment-id 유효성 검사
         CommentEntity comment = commentRepository.findById(commentId)
@@ -106,9 +99,9 @@ public class CommentService {
     }
 
     // 댓글 삭제
-    public void deleteComment(UserEntity user, Long commentId) throws RestApiException {
+    public void deleteComment(UserEntity user, Long userId, Long commentId) throws RestApiException {
         // temp
-        user = getUser(user);
+        user = userRepository.findById(userId).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
 
         // comment-id 유효성 검사
         CommentEntity comment = commentRepository.findById(commentId)
