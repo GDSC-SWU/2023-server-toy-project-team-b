@@ -2,8 +2,10 @@ package com.gdsc_teamb.servertoyproject.domain.comment.service;
 
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentEntity;
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentRepository;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.CommentItemDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.NewCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.error.CommentErrorCode;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
@@ -14,6 +16,8 @@ import com.gdsc_teamb.servertoyproject.global.Error.GlobalErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +56,18 @@ public class CommentService {
                 .commentId(commentId)
                 .content(comment.getContent())
                 .build();
+    }
+
+    // 댓글 조회
+    public ReadCommentResDto readComment(Long postId) throws RestApiException {
+        // post-id 유효성 검사
+        PostEntity post = postRepository.findById(postId)
+                .orElseThrow(() -> new RestApiException(CommentErrorCode.POST_NOT_FOUND));
+
+        // 데이터 조회
+        ArrayList<CommentItemDto> comments = commentRepository.findAllByPost(post);
+
+        // 결과 반환
+        return new ReadCommentResDto(postId, comments);
     }
 }
