@@ -62,7 +62,7 @@ class CommentApiTest {
     void addComment() throws Exception {
         // given
         String content = "test-comment";
-        NewCommentReqDto reqDto = new NewCommentReqDto(postId, content);
+        NewCommentReqDto reqDto = new NewCommentReqDto(content);
         String json = new ObjectMapper().writeValueAsString(reqDto);
 
         // when, then

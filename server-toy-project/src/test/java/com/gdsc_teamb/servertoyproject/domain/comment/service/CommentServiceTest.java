@@ -62,10 +62,10 @@ class CommentServiceTest {
     void addComment() {
         // given
         String content = "comment_test";
-        NewCommentReqDto reqDto = new NewCommentReqDto(post.getId(), content);
+        NewCommentReqDto reqDto = new NewCommentReqDto(content);
 
         // when
-        CommentResDto resDto = commentService.addComment(user, reqDto);
+        CommentResDto resDto = commentService.addComment(user, post.getId(), reqDto);
 
         // then
         CommentEntity commentEntity = commentRepository.findById(resDto.getCommentId()).orElse(null);
@@ -120,7 +120,7 @@ class CommentServiceTest {
         Long commentId = commentRepository.save(comment).getId();
 
         // when
-        UpdateCommentResDto resDto = commentService.updateComment(user, commentId, new NewCommentReqDto(post.getId(), content2));
+        UpdateCommentResDto resDto = commentService.updateComment(user, commentId, new NewCommentReqDto(content2));
 
         // then
         CommentEntity commentData = commentRepository.findById(commentId).orElse(null);

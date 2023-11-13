@@ -39,12 +39,12 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public CommentResDto addComment(UserEntity user, NewCommentReqDto newCommentReqDto) throws RestApiException {
+    public CommentResDto addComment(UserEntity user, Long postId, NewCommentReqDto newCommentReqDto) throws RestApiException {
         // temp
         user = getUser(user);
 
-        // post-id로 PostEntity 탐색
-        PostEntity post = postRepository.findById(newCommentReqDto.getPost_id())
+        // post-id 유효성 검사
+        PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new RestApiException(CommentErrorCode.POST_NOT_FOUND));
 
         // CommentEntity 생성
@@ -109,7 +109,7 @@ public class CommentService {
     public void deleteComment(UserEntity user, Long commentId) throws RestApiException {
         // temp
         user = getUser(user);
-        
+
         // comment-id 유효성 검사
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RestApiException(CommentErrorCode.COMMENT_NOT_FOUND));
