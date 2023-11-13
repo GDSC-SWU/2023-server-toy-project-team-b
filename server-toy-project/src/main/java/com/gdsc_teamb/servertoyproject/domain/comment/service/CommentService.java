@@ -29,12 +29,19 @@ public class CommentService {
     // temp
     private final UserRepository userRepository;
 
+    // temp
+    public UserEntity getUser(UserEntity user) throws RestApiException {
+        if (user == null)
+            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+
+        return user;
+    }
+
     // 댓글 작성
     @Transactional
     public CommentResDto addComment(UserEntity user, NewCommentReqDto newCommentReqDto) throws RestApiException {
         // temp
-        if (user == null)
-            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+        user = getUser(user);
 
         // post-id로 PostEntity 탐색
         PostEntity post = postRepository.findById(newCommentReqDto.getPost_id())
@@ -77,8 +84,7 @@ public class CommentService {
     @Transactional
     public UpdateCommentResDto updateComment(UserEntity user, Long commentId, NewCommentReqDto reqDto) throws RestApiException {
         // temp
-        if (user == null)
-            user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+        user = getUser(user);
 
         // comment-id 유효성 검사
         CommentEntity comment = commentRepository.findById(commentId)
@@ -97,5 +103,22 @@ public class CommentService {
                 .commentId(commentId)
                 .content(comment.getContent())
                 .build();
+    }
+
+    // 댓글 삭제
+    public void deleteComment(UserEntity user, Long commentId) throws RestApiException {
+        // temp
+        user = getUser(user);
+        
+        // comment-id 유효성 검사
+        CommentEntity comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RestApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+
+        // 댓글 작성자와 요청 사용자 일치 여부 확인
+        if (!comment.getUser().equals(user))
+            throw new RestApiException(CommentErrorCode.ACCESS_DENIED);
+
+        // 데이터 삭제
+        commentRepository.delete(comment);
     }
 }
