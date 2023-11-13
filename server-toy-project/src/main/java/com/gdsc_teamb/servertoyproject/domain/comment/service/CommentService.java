@@ -4,7 +4,7 @@ import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentEntity;
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentRepository;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.CommentItemDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
-import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.NewCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.error.CommentErrorCode;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
@@ -30,7 +30,7 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public NewCommentResDto addComment(UserEntity user, NewCommentReqDto newCommentReqDto) throws RestApiException {
+    public CommentResDto addComment(UserEntity user, NewCommentReqDto newCommentReqDto) throws RestApiException {
         // temp
         user = userRepository.findById(1L).orElseThrow(() -> new RestApiException(GlobalErrorCode.INTERNAL_SERVER_ERROR));
 
@@ -49,7 +49,7 @@ public class CommentService {
         Long commentId = commentRepository.save(comment).getId();
 
         // 결과 반환
-        return NewCommentResDto.builder()
+        return CommentResDto.builder()
                 .nickname(user.getNickname())
                 .isPostWriter(post.getUser().equals(user))
                 .postId(post.getId())

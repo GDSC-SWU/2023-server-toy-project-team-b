@@ -1,7 +1,7 @@
 package com.gdsc_teamb.servertoyproject.domain.comment.api;
 
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
-import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.NewCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.service.CommentService;
 import com.gdsc_teamb.servertoyproject.global.common.DataResponseDto;
 import com.gdsc_teamb.servertoyproject.global.common.ResponseDto;
@@ -22,8 +22,8 @@ public class CommentApi {
     // 댓글 작성
     @PostMapping
     public ResponseEntity<ResponseDto> addComment(/*@AuthenticationPrincipal UserEntity user*/@RequestBody @Valid NewCommentReqDto newCommentReqDto) {
-        NewCommentResDto newCommentResDto = commentService.addComment(null, newCommentReqDto);
+        CommentResDto commentResDto = commentService.addComment(null, newCommentReqDto);
 
-        return ResponseEntity.status(201).body(DataResponseDto.of(newCommentResDto, 201));
+        return ResponseEntity.status(201).body(DataResponseDto.of(commentResDto, 201));
     }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class NewCommentResDto {
+public class CommentResDto {
     private String nickname;
     private Boolean isPostWriter;
     private Long postId;

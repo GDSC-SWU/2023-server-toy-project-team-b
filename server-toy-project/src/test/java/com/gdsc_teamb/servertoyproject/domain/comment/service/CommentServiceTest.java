@@ -3,7 +3,7 @@ package com.gdsc_teamb.servertoyproject.domain.comment.service;
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentEntity;
 import com.gdsc_teamb.servertoyproject.domain.comment.domain.CommentRepository;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.request.NewCommentReqDto;
-import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.NewCommentResDto;
+import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
@@ -61,7 +61,7 @@ class CommentServiceTest {
         NewCommentReqDto reqDto = new NewCommentReqDto(post.getId(), content);
 
         // when
-        NewCommentResDto resDto = commentService.addComment(user, reqDto);
+        CommentResDto resDto = commentService.addComment(user, reqDto);
 
         // then
         CommentEntity commentEntity = commentRepository.findById(resDto.getCommentId()).orElse(null);
