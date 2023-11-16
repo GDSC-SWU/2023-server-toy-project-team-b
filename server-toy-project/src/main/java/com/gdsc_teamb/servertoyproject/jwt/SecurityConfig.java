@@ -1,5 +1,6 @@
 package com.gdsc_teamb.servertoyproject.jwt;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,6 +18,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity    // 웹 보안 활성화 (CSRF 공격 방지)
 @EnableMethodSecurity // 메서드 레벨의 보안 설정 활성화
 public class SecurityConfig {
+
+    @Autowired // 의존성 주입
     private JwtTokenProvider jwtTokenProvider;
 
     @Bean
