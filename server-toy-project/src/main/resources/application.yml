@@ -20,4 +20,4 @@ spring:
         format_sql: true
 
   jwt:
-    secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+    secret: ${SPRING_DATASOURCE_KEY}
