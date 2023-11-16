@@ -14,9 +14,9 @@ public class MemberController {
 
     @PostMapping("/login")
     public JwtToken login(@RequestBody LoginDto loginDto) {
-        String memberId = loginDto.getMemberId();
+        String email = loginDto.getEmail();
         String password = loginDto.getPassword();
-        JwtToken jwtToken = memberService.login(memberId, password);
+        JwtToken jwtToken = memberService.login(email, password);
         return jwtToken;
     }
 
