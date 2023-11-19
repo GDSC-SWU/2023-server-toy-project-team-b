@@ -19,18 +19,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
+    @Transactional
     public String join(String email,String nickname,String password,String phone){
 
         // nickname 중복 체크
         userRepository.findByNickname(nickname)
                 .ifPresent(userEntity -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED,nickname + " >> 이미 존재하는 닉네임");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATION,nickname);
                 });
 
         // email 중복 체크
         userRepository.findByEmail(email)
                 .ifPresent(userEntity -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED,email + " >> 이미 존재하는 이메일");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATION,email);
                 });
 
         // 저장
@@ -52,7 +53,7 @@ public class UserService {
     public String update(String email, Optional<String> nickname, Optional<String> phone) throws Exception {
 
         UserEntity user= userRepository.findByEmail(email).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 이메일. email = "+email));
+                new AppException(ErrorCode.NOTFOUND_USER,email));
 
 
         nickname.ifPresent(user::updateNickname);
