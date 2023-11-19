@@ -1,11 +1,10 @@
 package com.gdsc_teamb.servertoyproject.web;
 
-
+import com.gdsc_teamb.servertoyproject.domain.response.domain.CommonResponse;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
+import com.gdsc_teamb.servertoyproject.service.ApiUtils;
 import com.gdsc_teamb.servertoyproject.service.UserService;
-import com.gdsc_teamb.servertoyproject.web.dto.UpdatePasswordDto;
-import com.gdsc_teamb.servertoyproject.web.dto.UserJoinRequestDto;
-import com.gdsc_teamb.servertoyproject.web.dto.UserUpdateRequestDto;
-import com.gdsc_teamb.servertoyproject.web.dto.UserWithdrawDto;
+import com.gdsc_teamb.servertoyproject.web.dto.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +25,17 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/api/v1/user/join")
-    public ResponseEntity<String> join(@RequestBody UserJoinRequestDto dto) throws Exception {
+    public CommonResponse<String> join(@RequestBody UserJoinRequestDto dto) throws Exception {
         userService.join(dto.getEmail(), dto.getNickname(), dto.getPassword(), dto.getPhone());
-        return ResponseEntity.ok().body("회원가입 성공");
+        //return ResponseEntity.ok().body("회원가입 성공");
+        return ApiUtils.success(200, dto.getEmail());
     };
 
     // 정보 수정 - phone, nickname
     @PutMapping("/api/v1/user/update/{email}")
-    public ResponseEntity<String> update(@PathVariable String email, @RequestBody UserUpdateRequestDto dto) throws Exception {
+    public CommonResponse<String> update(@PathVariable String email, @RequestBody UserUpdateRequestDto dto) throws Exception {
         userService.update(email,dto.nickname(),dto.phone());
-        return ResponseEntity.ok().body("수정 성공");
+        return ApiUtils.success(200,null);
     }
 
     // 비밀번호 변경
@@ -46,7 +46,7 @@ public class UserController {
 
     // 회원탈퇴
     @DeleteMapping("/api/v1/user/{email}")
-    public void withdraw(@PathVariable String email,@RequestParam String password) throws Exception {
+    public void withdraw(@PathVariable String email,@RequestParam(value="password",required = true) String password) throws Exception {
         userService.withdraw(email,password);
     }
 }
