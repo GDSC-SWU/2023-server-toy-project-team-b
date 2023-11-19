@@ -55,8 +55,8 @@ public class BoardService {
     // 게시글 목록 조회
     // 게시글 목록을 담은 List<BoardListDto> return
     @Transactional (readOnly=true)
-    public List<BoardListDto> findAllDesc(){
-        return postRepository.findAllDesc().stream()
+    public List<BoardListDto> findAllByOrderByIdDesc(){
+        return postRepository.findAllByOrderByIdDesc().stream()
                 // BoardRepository 의 findAllDesc 메서드를 호출하여 게시글을 내림차순으로 조회 (쿼리 기능)
                 .map(BoardListDto::new)// 각 게시글을 BoardListDto 로 변환
                 .collect(Collectors.toList()); // 이후 리스트로 수집하여 반환

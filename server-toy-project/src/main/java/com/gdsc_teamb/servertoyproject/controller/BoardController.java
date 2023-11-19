@@ -47,7 +47,7 @@ public class BoardController {
     // 반환 값: 조회된 모든 게시글의 목록이 담긴 DTO 들을 리스트로 반환
     @GetMapping("/api/boards")
     public List<BoardListDto> findAllDesc() {
-        return boardService.findAllDesc();
+        return boardService.findAllByOrderByIdDesc();
     }
 
     // HTTP DELETE 요청을 통해 특정 ID의 게시글을 삭제
