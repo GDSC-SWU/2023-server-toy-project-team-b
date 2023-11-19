@@ -1,12 +1,13 @@
 package com.gdsc_teamb.servertoyproject.controller;
 
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
-import com.gdsc_teamb.servertoyproject.domain.repository.BoardRepository;
+import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
 import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.dto.BoardDto;
 import com.gdsc_teamb.servertoyproject.dto.BoardUpdateDto;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,14 @@ class BoardControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private BoardRepository boardRepository;
+    private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
 
     // 테스트 실행 후에 수행될 데이터 정리 메서드
     @AfterEach
     public void tearDown() throws Exception {
-        boardRepository.deleteAll();
+        postRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -51,7 +52,8 @@ class BoardControllerTest {
     final String CONTENT = "content-test";
 
     @Test
-    public void Posts_등록() throws Exception{
+    @DisplayName("Post 등록 테스트")
+    public void postRegister() throws Exception{
         //Given 등록할 게시글 생성
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
@@ -82,7 +84,7 @@ class BoardControllerTest {
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
         // 데이터베이스에 저장된 모든 게시글을 조회하고, 첫 번째 게시글이 기대한 대로 생성되었는지 검증
-        List<PostEntity> all = boardRepository.findAll();
+        List<PostEntity> all = postRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(TITLE);
         assertThat(all.get(0).getContent()).isEqualTo(CONTENT);
         assertThat(all.get(0).getUser().getId()).isEqualTo(savedUser.getId());
@@ -90,7 +92,8 @@ class BoardControllerTest {
     }
 
     @Test
-    public void Posts_수정() throws Exception {
+    @DisplayName("Post 수정 테스트")
+    public void postUpdate() throws Exception {
         // Given 등록된 게시물과 수정할 게시물
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
@@ -99,7 +102,7 @@ class BoardControllerTest {
                 .phone("01012345678")
                 .build());
 
-        PostEntity savedPost = boardRepository.save(PostEntity.builder()
+        PostEntity savedPost = postRepository.save(PostEntity.builder()
                 .title("title")
                 .content("content")
                 .user(savedUser)
@@ -124,23 +127,26 @@ class BoardControllerTest {
                         requestEntity, Long.class);
 
         // Then 게시글 수정된다
-        List<PostEntity> all = boardRepository.findAll();
+        List<PostEntity> all = postRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
     }
 
     @Test
-    public void Posts_조회() throws Exception{
+    @DisplayName("Post 조회 테스트")
+    public void checkPost() throws Exception{
 
     }
 
     @Test
-    public void Posts_목록조회() throws Exception{
+    @DisplayName("Post 목록 조회 테스트")
+    public void checkListPost() throws Exception{
 
     }
 
     @Test
-    public void Posts_삭제() throws Exception{
+    @DisplayName("Post 삭제 테스트")
+    public void deletePost() throws Exception{
 
     }
 }

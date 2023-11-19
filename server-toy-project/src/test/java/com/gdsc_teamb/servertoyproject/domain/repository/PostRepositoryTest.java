@@ -1,9 +1,7 @@
 package com.gdsc_teamb.servertoyproject.domain.repository;
 
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
-import com.gdsc_teamb.servertoyproject.domain.repository.BoardRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
-import com.gdsc_teamb.servertoyproject.service.BoardService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class BoardRepositoryTest {
+class PostRepositoryTest {
 
     @Autowired
-    private BoardRepository boardRepository;
+    private PostRepository postRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @AfterEach
     public void cleanup(){
-        boardRepository.deleteAll();
+        postRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -45,14 +43,14 @@ class BoardRepositoryTest {
                 .phone("01012345678")
                 .build());
 
-        PostEntity savedPost = boardRepository.save(PostEntity.builder()
+        PostEntity savedPost = postRepository.save(PostEntity.builder()
                 .title(TITLE)
                 .content(CONTENT)
                 .user(savedUser)
                 .build());
 
         //when
-        List<PostEntity> postsList=boardRepository.findAll();
+        List<PostEntity> postsList= postRepository.findAll();
 
         //then
         PostEntity posts=postsList.get(0);
