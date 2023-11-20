@@ -56,7 +56,7 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("Post 등록 테스트")
+    @DisplayName("게시물 등록 테스트")
     public void postRegister() throws Exception{
         final String TITLE = "title-test";
         final String CONTENT = "content-test";
@@ -97,7 +97,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("Post 수정 테스트")
+    @DisplayName("게시물 수정 테스트")
     public void postUpdate() throws Exception {
         // Given 등록된 게시물과 수정할 게시물
         UserEntity savedUser = userRepository.save(UserEntity.builder()
@@ -145,19 +145,19 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("Post 조회 테스트")
+    @DisplayName("게시물 조회 테스트")
     public void checkPost() throws Exception{
 
     }
 
     @Test
-    @DisplayName("Post 목록 조회 테스트")
+    @DisplayName("게시물 목록 조회 테스트")
     public void checkListPost() throws Exception{
 
     }
 
     @Test
-    @DisplayName("Post 삭제 테스트")
+    @DisplayName("게시물 삭제 테스트")
     public void deletePost() throws Exception{
 
     }
