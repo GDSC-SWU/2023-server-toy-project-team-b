@@ -12,10 +12,17 @@ public class UserResponseDto {
     private String nickname;
     private String phone;
 
-    public UserResponseDto(UserEntity user){
-        this.email=user.getEmail();
-        this.nickname=user.getNickname();
-        this.phone=user.getPhone();
+    @Builder
+    public UserResponseDto(String email,String nickname,String phone){
+        this.email=email;
+        this.nickname=nickname;
+        this.phone=phone;
     }
-
+    public UserEntity toEntity(){
+        return UserEntity.builder()
+                .email(email)
+                .nickname(nickname)
+                .phone(phone)
+                .build();
+    }
 }
