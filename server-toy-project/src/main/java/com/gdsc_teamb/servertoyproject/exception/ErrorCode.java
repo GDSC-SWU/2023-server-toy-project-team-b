@@ -16,8 +16,9 @@ public enum ErrorCode {
     NOT_AUTHORIZED(403, "권한이 없습니다."),
     USER_EMAIL_DUPLICATION(400, "이미 등록된 이메일입니다."),
     USER_NICKNAME_DUPLICATION(400, "이미 등록된 닉네임입니다."),
-    NOT_FOUND_USER(404,  "해당 이름의 유저가 존재하지 않습니다.");
+    NOT_FOUND_USER(404,  "해당 유저가 존재하지 않습니다.");
 
+    @Getter
     private final String message;
     private final int status;
 
@@ -26,10 +27,4 @@ public enum ErrorCode {
         this.message = message;
     }
 
-    public String getMessage() {
-        return this.message;
-    }
-    public int getStatus() {
-        return status;
-    }
-    }
+}
