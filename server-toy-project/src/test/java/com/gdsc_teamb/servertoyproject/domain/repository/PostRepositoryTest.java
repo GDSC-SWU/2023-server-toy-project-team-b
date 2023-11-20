@@ -61,4 +61,6 @@ class PostRepositoryTest {
         assertThat(posts.getUser().getId()).isEqualTo(savedPost.getUser().getId());
 
     }
+
+
 }

@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,13 +29,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.util.AssertionErrors.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 
 @ExtendWith(SpringExtension.class)
@@ -42,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 class BoardControllerTest {
-
     // 테스트에 사용할 서버의 랜덤 포트 번호를 할당
     @LocalServerPort
     private int port;
@@ -53,11 +54,9 @@ class BoardControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-
     @Test
     @DisplayName("게시물 등록 테스트")
-    public void postRegister() throws Exception{
+    public void registerPost() throws Exception{
         final String TITLE = "title-test";
         final String CONTENT = "content-test";
 
@@ -79,7 +78,7 @@ class BoardControllerTest {
 
         // when
         mockMvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(boardDto)))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -98,7 +97,7 @@ class BoardControllerTest {
 
     @Test
     @DisplayName("게시물 수정 테스트")
-    public void postUpdate() throws Exception {
+    public void updatePost() throws Exception {
         // Given 등록된 게시물과 수정할 게시물
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
@@ -120,7 +119,6 @@ class BoardControllerTest {
         BoardUpdateDto boardUpdateDto= BoardUpdateDto.builder()
                 .title(expectedTitle)
                 .content(expectedContent)
-
                 .build();
 
         String url="http://localhost:" + port + "/api/boards/"+updateId;
@@ -129,7 +127,7 @@ class BoardControllerTest {
 
         // when
         mockMvc.perform(put(url)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(boardUpdateDto)))
                 .andExpect(status().isOk());
 
@@ -145,20 +143,27 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시물 조회 테스트")
-    public void checkPost() throws Exception{
-
-    }
-
-    @Test
-    @DisplayName("게시물 목록 조회 테스트")
-    public void checkListPost() throws Exception{
-
-    }
-
-    @Test
     @DisplayName("게시물 삭제 테스트")
     public void deletePost() throws Exception{
+        UserEntity savedUser = userRepository.save(UserEntity.builder()
+                .email("abc@abc.com")
+                .password("password1234")
+                .nickname("nickname")
+                .phone("01012345678")
+                .build());
 
+        PostEntity savedPost = postRepository.save(PostEntity.builder()
+                .title("title")
+                .content("content")
+                .user(savedUser)
+                .build());
+
+        Long deleteId = savedPost.getId();
+        String url="http://localhost:" + port + "/api/boards/"+deleteId;
+
+        // when
+        mockMvc.perform(delete(url)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
