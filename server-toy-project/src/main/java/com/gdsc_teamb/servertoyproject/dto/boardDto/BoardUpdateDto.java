@@ -1,4 +1,4 @@
-package com.gdsc_teamb.servertoyproject.dto;
+package com.gdsc_teamb.servertoyproject.dto.boardDto;
 
 import lombok.Builder;
 import lombok.Getter;

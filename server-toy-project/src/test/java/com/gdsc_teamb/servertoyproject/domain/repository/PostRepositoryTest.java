@@ -3,6 +3,7 @@ package com.gdsc_teamb.servertoyproject.domain.repository;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ class PostRepositoryTest {
     final String CONTENT = "content-test";
 
     @Test
-    public void 게시글저장_불러오기(){
+    @DisplayName("게시글 저장 & 불러오기")
+    public void savePost_Load(){
         //given
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")

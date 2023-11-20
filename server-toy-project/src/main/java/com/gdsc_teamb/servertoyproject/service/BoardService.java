@@ -2,10 +2,12 @@ package com.gdsc_teamb.servertoyproject.service;
 
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
-import com.gdsc_teamb.servertoyproject.dto.BoardDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardListDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardReadDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardUpdateDto;
+import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardListDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardReadDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +20,17 @@ import java.util.stream.Collectors;
 
 public class BoardService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     // 게시글 작성
     // boardDto 는 작성할 게시글의 정보를 담음
     // 작성된 게시글의 id를 return
     @Transactional
     public Long save(BoardDto boardDto) {
-        return postRepository.save(boardDto.toEntity()).getId();
+        UserEntity user=userRepository.findByNickname(boardDto.getNickname()).
+            orElseThrow(()->new IllegalArgumentException("user 정보가 없습니다."));
+
+        return postRepository.save(boardDto.toEntity(user)).getId();
     }
 
     // 게시글 수정

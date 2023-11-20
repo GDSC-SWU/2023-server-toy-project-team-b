@@ -1,8 +1,9 @@
-package com.gdsc_teamb.servertoyproject.dto;
+package com.gdsc_teamb.servertoyproject.dto.boardDto;
 
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import lombok.*;
+import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 
@@ -12,28 +13,21 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class BoardDto {
-    private Long id; // 게시글 ID
-    private UserEntity user; // 작성자 정보
     private String title; // 게시글 제목
     private String content; // 게시글 내용
-    private LocalDateTime created_at; // 생성 일자
-    private LocalDateTime updated_at; // 수정 일자
+    private String nickname; // 작성자 이름
 
     //BoardDto 생성자
     @Builder
-    public BoardDto(Long id, UserEntity user, String title,
-                    String content, LocalDateTime created_at, LocalDateTime updated_at){
-        this.id=id;
-        this.user=user;
+    public BoardDto(String title, String content, UserEntity user){
         this.title=title;
         this.content=content;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.nickname=user.getNickname();
     }
 
     // BoardDto 를 PostEntity 로 변환하는 메서드
     // 변환된 PostEntity 가 return
-    public PostEntity toEntity(){
+    public PostEntity toEntity(UserEntity user){
         PostEntity build = PostEntity.builder()
                 .user(user)
                 .title(title)

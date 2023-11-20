@@ -1,9 +1,9 @@
 package com.gdsc_teamb.servertoyproject.controller;
 
-import com.gdsc_teamb.servertoyproject.dto.BoardDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardListDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardReadDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardUpdateDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardListDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardReadDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;
 import com.gdsc_teamb.servertoyproject.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+
 public class BoardController {
     private final BoardService boardService;
 
@@ -27,7 +28,7 @@ public class BoardController {
 
     // HTTP PUT 요청을 통해 특정 ID의 게시글을 수정
     // 매개변수: 수정할 게시글의 ID, 수정할 내용이 담긴 DTO
-    // @PathVariable을 통해 경로에서 추출된 게시글의 ID를 전달 받고, @RequestBody를 통해 클라이언트로부터 전달된 JSON 데이터를 변환하여 requestDto로 전달
+    // @PathVariable 을 통해 경로에서 추출된 게시글의 ID를 전달 받고, @RequestBody를 통해 클라이언트로부터 전달된 JSON 데이터를 변환하여 requestDto로 전달
     // 반환 값: 수정이 완료된 게시글의 ID를 반환
     @PutMapping("/api/boards/{id}")
     public Long update(@PathVariable Long id, @RequestBody BoardUpdateDto requestDto){

@@ -1,29 +1,41 @@
 package com.gdsc_teamb.servertoyproject.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
 import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
-import com.gdsc_teamb.servertoyproject.dto.BoardDto;
-import com.gdsc_teamb.servertoyproject.dto.BoardUpdateDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
+import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class BoardControllerTest {
 
     // 테스트에 사용할 서버의 랜덤 포트 번호를 할당
@@ -40,6 +52,12 @@ class BoardControllerTest {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext context;
+
 
     // 테스트 실행 후에 수행될 데이터 정리 메서드
     @AfterEach
@@ -70,19 +88,13 @@ class BoardControllerTest {
 
         String url="http://localhost:" + port + "/api/boards";
 
-        // When 게시글 등록 요청
-        // 실제로 게시글을 등록하는 HTTP POST 요청을 보냄
-        // TestRestTemplate 을 사용하여 지정된 URL에 boardDto를 POST 방식으로 전송
-        // ResponseEntity<Long> 은 HTTP 응답을 나타내는 객체
-        // 이 ResponseEntity 는 HTTP 응답 상태 코드와 함께 생성된 게시글의 ID를 포함 (responseEntity.getBody()를 통해 반환 가능)
-        ResponseEntity<Long> responseEntity=restTemplate.postForEntity(url, boardDto, Long.class);
+        // when
+        mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(boardDto)))
+                .andExpect(status().isOk());
 
-        // Then 게시글 등록
-        // 응답 상태 코드가 HttpStatus.OK인지 확인
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        // 반환된 게시글의 ID가 0보다 큰지 확인
-        assertThat(responseEntity.getBody()).isGreaterThan(0L);
-
+        // then
         // 데이터베이스에 저장된 모든 게시글을 조회하고, 첫 번째 게시글이 기대한 대로 생성되었는지 검증
         List<PostEntity> all = postRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(TITLE);
@@ -115,18 +127,20 @@ class BoardControllerTest {
         BoardUpdateDto boardUpdateDto= BoardUpdateDto.builder()
                 .title(expectedTitle)
                 .content(expectedContent)
+
                 .build();
 
         String url="http://localhost:" + port + "/api/boards/"+updateId;
 
         HttpEntity<BoardUpdateDto> requestEntity=new HttpEntity<>(boardUpdateDto);
 
-        // When 게시글 수정 요청
-        ResponseEntity<Long> responseEntity = restTemplate.
-                exchange(url, HttpMethod.PUT,
-                        requestEntity, Long.class);
+        // when
+        mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(boardUpdateDto)))
+                .andExpect(status().isOk());
 
-        // Then 게시글 수정된다
+        // then
         List<PostEntity> all = postRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
