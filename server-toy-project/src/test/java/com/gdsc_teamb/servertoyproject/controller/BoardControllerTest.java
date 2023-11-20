@@ -7,6 +7,7 @@ import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,35 +37,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Transactional
 class BoardControllerTest {
 
     // 테스트에 사용할 서버의 랜덤 포트 번호를 할당
     @LocalServerPort
     private int port;
-
-    // TestRestTemplate : 테스트용 RestTemplate
-    // HTTP 요청을 수행하는 데 사용
-    // 테스트 코드에서 HTTP 요청을 보내고 응답을 확인하는 등의 작업을 간편하게 수행할 수 있음
-    @Autowired
-    private TestRestTemplate restTemplate;
-
     @Autowired
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
-
-
-    // 테스트 실행 후에 수행될 데이터 정리 메서드
-    @AfterEach
-    public void tearDown() throws Exception {
-        postRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     final String TITLE = "title-test";
     final String CONTENT = "content-test";
