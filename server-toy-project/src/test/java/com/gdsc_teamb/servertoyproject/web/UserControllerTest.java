@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gdsc_teamb.servertoyproject.ServerToyProjectApplication;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
+import com.gdsc_teamb.servertoyproject.exception.AppException;
+import com.gdsc_teamb.servertoyproject.exception.ErrorCode;
 import com.gdsc_teamb.servertoyproject.service.UserService;
 import com.gdsc_teamb.servertoyproject.web.dto.UpdatePasswordDto;
 import com.gdsc_teamb.servertoyproject.web.dto.UserJoinRequestDto;
