@@ -29,53 +29,55 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/api/v1/user/join")
-    public ApiResponse<?> join(@RequestBody UserJoinRequestDto dto) throws Exception {
+    public ResponseEntity<?> join(@RequestBody UserJoinRequestDto dto) throws Exception {
         try {
             UserResponseDto result = userService.join(dto.getEmail(), dto.getNickname(), dto.getPassword(), dto.getPhone());
-            return ApiResponse.createSuccess(result);
+            return ResponseEntity.status(200).body(null);
         } catch (AppException ex) {
             ErrorCode errorCode = ex.getErrorCode();
-            return ApiResponse.createError("Error occurred: " + errorCode.getMessage());
+            return ResponseEntity.status(errorCode.getStatus()).body(ApiResponse.createError("Error occurred: " + errorCode.getMessage()));
         }
     };
 
     // 정보 수정 - phone, nickname
     @PutMapping("/api/v1/user/update/{email}")
-    public ApiResponse<?> update(@PathVariable String email, @RequestBody UserUpdateRequestDto dto) throws Exception {
+    public ResponseEntity<?> update(@PathVariable String email, @RequestBody UserUpdateRequestDto dto) throws Exception {
         try {
             UserResponseDto result = userService.update(email, dto.nickname(), dto.phone());
-            return ApiResponse.createSuccess(result);
+            return ResponseEntity.status(200).body(null);
         } catch (AppException ex) {
             ErrorCode errorCode = ex.getErrorCode();
-            return ApiResponse.createError("Error occurred: " + errorCode.getMessage());
+            return ResponseEntity.status(errorCode.getStatus()).body(ApiResponse.createError("Error occurred: " + errorCode.getMessage()));
         }
 
     }
 
     // 비밀번호 변경
     @PutMapping("/api/v1/user/update/password/{email}")
-    public ApiResponse<?>  updatePassword(@PathVariable String email,@RequestBody UpdatePasswordDto updatePasswordDto) throws Exception {
+    public ResponseEntity<?>  updatePassword(@PathVariable String email,@RequestBody UpdatePasswordDto updatePasswordDto) throws Exception {
 
         try {
             userService.updatePassword(email,updatePasswordDto.checkPassword(),updatePasswordDto.toBePassword());
-            return ApiResponse.createSuccessWithNoContent();
+            return ResponseEntity.status(200).body(null);
         } catch (AppException ex) {
             ErrorCode errorCode = ex.getErrorCode();
-            return ApiResponse.createError("Error occurred: " + errorCode.getMessage());
+            return ResponseEntity.status(errorCode.getStatus()).body(ApiResponse.createError("Error occurred: " + errorCode.getMessage()));
         }
 
     }
 
     // 회원탈퇴
     @DeleteMapping("/api/v1/user/{email}")
-    public ApiResponse<?> withdraw(@PathVariable String email, @RequestParam(value="password",required = true) String password) throws Exception {
+    public ResponseEntity<?> withdraw(@PathVariable String email, @RequestParam(value="password",required = true) String password) throws Exception {
 
         try {
             userService.withdraw(email,password);
-            return ApiResponse.createSuccessWithNoContent();
+            return ResponseEntity.status(200).body(null);
+
         } catch (AppException ex) {
             ErrorCode errorCode = ex.getErrorCode();
-            return ApiResponse.createError("Error occurred: " + errorCode.getMessage());
+            return ResponseEntity.status(errorCode.getStatus()).body(ApiResponse.createError("Error occurred: " + errorCode.getMessage()));
+
         }
     }
 }
