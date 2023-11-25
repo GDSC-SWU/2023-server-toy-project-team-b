@@ -3,6 +3,7 @@ package com.gdsc_teamb.servertoyproject.domain.post.domain;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,6 +31,7 @@ public class HeartEntity {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    @Builder
     public HeartEntity(UserEntity user, PostEntity post) {
         this.user = user;
         this.post = post;
