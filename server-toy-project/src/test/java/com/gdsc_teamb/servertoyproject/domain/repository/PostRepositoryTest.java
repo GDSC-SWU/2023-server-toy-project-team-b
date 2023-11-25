@@ -2,6 +2,7 @@ package com.gdsc_teamb.servertoyproject.domain.repository;
 
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Transactional
 class PostRepositoryTest {
 
     @Autowired
@@ -25,18 +27,11 @@ class PostRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @AfterEach
-    public void cleanup(){
-        postRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-    final String TITLE = "title-test";
-    final String CONTENT = "content-test";
-
     @Test
     @DisplayName("게시글 저장 & 불러오기")
     public void savePost_Load(){
+        final String TITLE = "title-test";
+        final String CONTENT = "content-test";
         //given
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")

@@ -17,14 +17,13 @@ public class HeartController {
     private final HeartService heartService;
 
     // 좋아요 설정
-    @PostMapping("/api/boards/{id}")
+    @PostMapping("/api/heart/{id}")
     public ResponseEntity<Object> insertHeart(@RequestBody HeartDto heartDto) throws Exception {
         return heartService.addHeart(heartDto);
     }
 
-
     // 좋아요 취소
-    @DeleteMapping ("/api/boards/{id}")
+    @DeleteMapping ("/api/heart/{id}")
     public ResponseEntity<Object> removeHeart(@RequestBody HeartDto heartDto) throws Exception {
         return heartService.deleteHeart(heartDto);
     }
