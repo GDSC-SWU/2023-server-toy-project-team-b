@@ -29,10 +29,10 @@ public class HeartService {
         try {
             // heartDto 에서 User ID 조회
             UserEntity user=userRepository.findById(heartDto.getUserId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException());
+                    .orElseThrow(() -> new IllegalArgumentException("User 없음"));
             // heartDto 에서 Post ID 조회
             PostEntity post=postRepository.findById(heartDto.getBoardId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException());
+                    .orElseThrow(() -> new IllegalArgumentException("Post 없음"));
             // HeartEntity 생성
             HeartEntity heart=HeartEntity.builder()
                     .user(user)
@@ -50,11 +50,12 @@ public class HeartService {
     @Transactional
     public ResponseEntity<Object> deleteHeart(HeartDto heartDto) throws Exception {
         try{
+            // User, Post id 존재하는지 검사
             UserEntity user=userRepository.findById(heartDto.getUserId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException());
+                    .orElseThrow(() -> new IllegalArgumentException("User 없음"));
 
             PostEntity post=postRepository.findById(heartDto.getBoardId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException());
+                    .orElseThrow(() -> new IllegalArgumentException("Post 없음"));
 
             // 해당하는 HeartEntity 가 실제로 존재하는지 확인
             HeartEntity heart=heartRepository.findByUserIdAndPostId(user,post)
