@@ -18,6 +18,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-  jwt:
-    secret: ${SPRING_DATASOURCE_KEY}
