@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -62,5 +63,10 @@ public class CommentEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, user, post, created_at);
+    }
+
+    @Transactional
+    public void update(String content) {
+        this.content = content;
     }
 }
