@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @DisplayName("Like Entity Test")
 @Slf4j
-class LikeEntityTest {
+class HeartEntityTest {
     final UserEntity USER = UserEntity.builder()
             .email("abc@abc.com")
             .password("password1234")
@@ -28,8 +28,8 @@ class LikeEntityTest {
     @DisplayName("LikeEntity equals() true 테스트")
     void likeEqualsTrue() {
         // given
-        LikeEntity likeA = new LikeEntity(USER, POST);
-        LikeEntity likeB = new LikeEntity(USER, POST);
+        HeartEntity likeA = new HeartEntity(USER, POST);
+        HeartEntity likeB = new HeartEntity(USER, POST);
 
         // when
         Boolean isLikeEqual = likeA.equals(likeB);
