@@ -1,9 +1,10 @@
 package com.gdsc_teamb.servertoyproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdsc_teamb.servertoyproject.domain.post.domain.HeartEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
-import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -123,8 +125,6 @@ class BoardControllerTest {
 
         String url="http://localhost:" + port + "/api/boards/"+updateId;
 
-        HttpEntity<BoardUpdateDto> requestEntity=new HttpEntity<>(boardUpdateDto);
-
         // when
         mockMvc.perform(put(url)
                         .contentType(APPLICATION_JSON)
@@ -162,8 +162,12 @@ class BoardControllerTest {
         String url="http://localhost:" + port + "/api/boards/"+deleteId;
 
         // when
-        mockMvc.perform(delete(url)
-                .contentType(APPLICATION_JSON))
+        mockMvc.perform(delete(url))
                 .andExpect(status().isOk());
+
+        // then
+        // 삭제한 데이터 조회
+        Optional<PostEntity> deletedPost = postRepository.findById(savedPost.getId());
+        assertThat(deletedPost).isNotPresent();
     }
 }

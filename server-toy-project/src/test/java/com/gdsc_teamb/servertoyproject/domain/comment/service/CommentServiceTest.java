@@ -8,9 +8,9 @@ import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.CommentResDto
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.UpdateCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
-import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
-import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
+import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

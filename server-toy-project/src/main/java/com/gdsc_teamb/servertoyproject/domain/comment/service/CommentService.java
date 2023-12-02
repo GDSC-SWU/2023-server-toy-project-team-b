@@ -9,7 +9,7 @@ import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.ReadCommentRe
 import com.gdsc_teamb.servertoyproject.domain.comment.dto.response.UpdateCommentResDto;
 import com.gdsc_teamb.servertoyproject.domain.comment.error.CommentErrorCode;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
-import com.gdsc_teamb.servertoyproject.domain.post.domain.PostRepository;
+import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
 import com.gdsc_teamb.servertoyproject.global.Error.Exception.RestApiException;

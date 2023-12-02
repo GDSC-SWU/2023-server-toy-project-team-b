@@ -5,7 +5,7 @@ import com.gdsc_teamb.servertoyproject.domain.post.domain.HeartEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.repository.HeartRepository;
 import com.gdsc_teamb.servertoyproject.domain.repository.PostRepository;
-import com.gdsc_teamb.servertoyproject.domain.repository.UserRepository;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardDto;
 import com.gdsc_teamb.servertoyproject.dto.boardDto.BoardUpdateDto;

@@ -3,6 +3,7 @@ package com.gdsc_teamb.servertoyproject.domain.repository;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.HeartEntity;
 import com.gdsc_teamb.servertoyproject.domain.post.domain.PostEntity;
 import com.gdsc_teamb.servertoyproject.domain.user.domain.UserEntity;
+import com.gdsc_teamb.servertoyproject.domain.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
