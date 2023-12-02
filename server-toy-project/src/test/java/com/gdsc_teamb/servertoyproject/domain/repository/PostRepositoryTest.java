@@ -32,7 +32,8 @@ class PostRepositoryTest {
     public void savePost_Load(){
         final String TITLE = "title-test";
         final String CONTENT = "content-test";
-        //given
+
+        //Given
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .email("abc@abc.com")
                 .password("password1234")
@@ -46,10 +47,10 @@ class PostRepositoryTest {
                 .user(savedUser)
                 .build());
 
-        //when
+        // When
         List<PostEntity> postsList= postRepository.findAll();
 
-        //then
+        // Then
         PostEntity posts=postsList.get(0);
         assertThat(posts.getTitle()).isEqualTo(savedPost.getTitle());
         assertThat(posts.getContent()).isEqualTo(savedPost.getContent());

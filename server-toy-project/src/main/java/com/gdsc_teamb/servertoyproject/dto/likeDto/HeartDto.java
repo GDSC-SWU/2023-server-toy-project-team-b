@@ -8,13 +8,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class HeartDto {
-    private UserEntity userId; // 좋아요 한 유저의 ID
-    private PostEntity boardId; // 좋아요 한 게시물의 ID
+    private Long userId; // 좋아요 한 유저의 ID
+    private Long postId; // 좋아요 한 게시물의 ID
 
     //BoardDto 생성자
     @Builder
-    public HeartDto(UserEntity userId, PostEntity boardId){
-        this.userId=userId;
-        this.boardId=boardId;
+    public HeartDto(UserEntity user, PostEntity post){
+        this.userId=user.getId();
+        this.postId=post.getId();
     }
 }

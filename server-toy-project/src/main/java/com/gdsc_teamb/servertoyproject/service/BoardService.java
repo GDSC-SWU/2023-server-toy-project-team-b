@@ -27,12 +27,16 @@ public class BoardService {
     // boardDto 는 작성할 게시글의 정보를 담음
     // 작성된 게시글의 id를 return
     @Transactional
-    public ResponseEntity<Object> save(BoardDto boardDto) {
+    public ResponseEntity<Object> savePost(BoardDto boardDto) {
         try{
             UserEntity user=userRepository.findByNickname(boardDto.getNickname()).
                     orElseThrow(()->new IllegalArgumentException());
+            // PostEntity 생성
+            PostEntity postEntity = boardDto.toEntity(user);
 
-            return ResponseEntity.ok(postRepository.save(boardDto.toEntity(user)).getId());
+            postRepository.save(postEntity); // 저장
+
+            return ResponseEntity.ok(boardDto.toEntity(user).getId());
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -51,7 +55,7 @@ public class BoardService {
         return id;
     }*/
     @Transactional
-    public ResponseEntity<Object> update(Long id, BoardUpdateDto boardUpdateDto) {
+    public ResponseEntity<Object> updatePost(Long id, BoardUpdateDto boardUpdateDto) {
         try {
             PostEntity post = postRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException());
@@ -102,7 +106,7 @@ public class BoardService {
     // 게시글 삭제
     // id는 삭제할 게시글의 ID
     @Transactional
-    public ResponseEntity<Object> delete(Long id){
+    public ResponseEntity<Object> deletePost(Long id){
         try{
             // boardRepository 에서 주어진 id에 해당하는 게시글을 데이터베이스에서 조회
             PostEntity post= postRepository.findById(id)

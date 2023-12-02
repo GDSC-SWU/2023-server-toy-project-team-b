@@ -5,10 +5,7 @@ import com.gdsc_teamb.servertoyproject.dto.likeDto.HeartDto;
 import com.gdsc_teamb.servertoyproject.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class HeartController {
 
     // 좋아요 취소
     @DeleteMapping ("/api/heart/{id}")
-    public ResponseEntity<Object> removeHeart(@RequestBody HeartDto heartDto) throws Exception {
-        return heartService.deleteHeart(heartDto);
+    public ResponseEntity<Object> removeHeart(@PathVariable Long id) throws Exception {
+        return heartService.deleteHeart(id);
     }
 }

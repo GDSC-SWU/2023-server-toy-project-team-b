@@ -163,7 +163,7 @@ class BoardControllerTest {
 
         // when
         mockMvc.perform(delete(url)
-                        .contentType(APPLICATION_JSON))
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

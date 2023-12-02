@@ -27,12 +27,12 @@ public class HeartService {
     @Transactional
     public ResponseEntity<Object> addHeart(HeartDto heartDto) throws Exception {
         try {
-            // heartDto 에서 User ID 조회
-            UserEntity user=userRepository.findById(heartDto.getUserId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("User 없음"));
-            // heartDto 에서 Post ID 조회
-            PostEntity post=postRepository.findById(heartDto.getBoardId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Post 없음"));
+            // User, Post id 로 해당 user, post 존재하는지 검사
+            UserEntity user=userRepository.findById(heartDto.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 id로 검색되는 User 없음"));
+            PostEntity post=postRepository.findById(heartDto.getPostId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 id로 검색되는 Post 없음"));
+
             // HeartEntity 생성
             HeartEntity heart=HeartEntity.builder()
                     .user(user)
@@ -40,7 +40,8 @@ public class HeartService {
                     .build();
 
             heartRepository.save(heart); // heart Entity 레포에 저장
-            return ResponseEntity.ok("좋아요 등록 성공");
+
+            return ResponseEntity.ok("좋아요 등록 성공, 닉네임: "+user.getNickname());
 
         } catch(Exception e){
             return ResponseEntity.badRequest().body("좋아요 등록 실패 " + e.getMessage());
@@ -48,22 +49,23 @@ public class HeartService {
     }
 
     @Transactional
-    public ResponseEntity<Object> deleteHeart(HeartDto heartDto) throws Exception {
+    public ResponseEntity<Object> deleteHeart(Long id) throws Exception {
         try{
-            // User, Post id 존재하는지 검사
-            UserEntity user=userRepository.findById(heartDto.getUserId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("User 없음"));
-
-            PostEntity post=postRepository.findById(heartDto.getBoardId().getId())
+            // User, Post id 로 해당 user, post 존재하는지 검사
+            PostEntity post=postRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Post 없음"));
 
-            // 해당하는 HeartEntity 가 실제로 존재하는지 확인
-            HeartEntity heart=heartRepository.findByUserIdAndPostId(user,post)
+            UserEntity user=userRepository.findById(post.getUser().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("User 없음"));
+
+
+            // id 통해서 해당하는 Heart 가 실제로 존재하는지 확인
+            HeartEntity heart=heartRepository.findByUserIdAndPostId(user.getId(),post.getId())
                     .orElseThrow(() -> new IllegalArgumentException());
 
             // 좋아요 삭제
             heartRepository.delete(heart);
-            return ResponseEntity.ok("좋아요 삭제 성공");
+            return ResponseEntity.ok("좋아요 삭제 성공, 닉네임: "+user.getNickname());
         }catch(Exception e){
             return ResponseEntity.badRequest().body("좋아요 삭제 실패 " + e.getMessage());
         }

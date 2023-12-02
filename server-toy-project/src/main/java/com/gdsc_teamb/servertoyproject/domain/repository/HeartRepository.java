@@ -12,5 +12,5 @@ import java.util.Optional;
 // LikeEntity 에 대한 CRUD 작업 제공
 @Repository
 public interface HeartRepository extends JpaRepository<HeartEntity, Long> {
-    Optional<HeartEntity> findByUserIdAndPostId(UserEntity userId, PostEntity postId);
+    Optional<HeartEntity> findByUserIdAndPostId(Long userId, Long postId);
 }

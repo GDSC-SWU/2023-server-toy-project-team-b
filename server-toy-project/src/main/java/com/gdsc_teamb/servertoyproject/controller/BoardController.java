@@ -24,7 +24,7 @@ public class BoardController {
     // 반환된 ID는 클라이언트에게 제공 (응답으로 전송) -> 클라이언트가 나중에 수정, 삭제할때 사용
     @PostMapping("/api/boards")
     public ResponseEntity<Object> save(@RequestBody BoardDto boardDto){
-        return boardService.save(boardDto);
+        return boardService.savePost(boardDto);
     }
 
     // HTTP PUT 요청을 통해 특정 ID의 게시글을 수정
@@ -33,7 +33,7 @@ public class BoardController {
     // 반환 값: 수정이 완료된 게시글의 ID를 반환
     @PutMapping("/api/boards/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody BoardUpdateDto requestDto){
-        return boardService.update(id, requestDto);
+        return boardService.updatePost(id, requestDto);
     }
 
     // HTTP GET 요청을 통해 특정 ID의 게시글을 조회
@@ -58,7 +58,7 @@ public class BoardController {
     // 반환 값: 삭제가 완료된 게시글의 ID를 반환
     @DeleteMapping("/api/boards/{id}")
     public Long delete(@PathVariable Long id){
-        boardService.delete(id);
+        boardService.deletePost(id);
         return id;
     }
 }
